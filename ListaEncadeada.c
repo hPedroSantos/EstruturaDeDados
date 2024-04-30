@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 /* Declaração das struct */
 struct no {
@@ -17,7 +18,7 @@ struct descritor {
 int main(void) {
     int numNos;
 
-    printf("Digite o número de nós: \n");
+    printf("Digite o número de nós: ");
     scanf("%d", &numNos);
 
     /* Semente para gerar números aleatórios */
@@ -57,7 +58,7 @@ int main(void) {
     }
 
     /* Imprimir a lista original */
-    printf("Lista original: ");
+    printf("Lista original: \n");
     struct no *temp_original = head;
     while (temp_original != NULL) {
         printf("%d, ", temp_original->dado);
@@ -84,13 +85,65 @@ int main(void) {
     }
 
     /* Imprimir a lista ordenada */
-    printf("Lista ordenada: ");
+    printf("Lista ordenada: \n");
     struct no *temp_ordenada = head;
     while (temp_ordenada != NULL) {
         printf("%d, ", temp_ordenada->dado);
         temp_ordenada = temp_ordenada->prox;
     }
     printf("\n");
+
+    /*Calcular valor médio*/
+    int soma = 0;
+    atual = head;
+    while(atual != NULL){
+        soma += atual -> dado;
+        atual = atual -> prox;
+    }
+
+    float valor_medio_float = (float)soma / numNos;
+    int valor_medio = round(valor_medio_float);
+    printf("Valor médio: %i\n", valor_medio);
+
+    /*Remover o valor acima da média*/
+    struct no *anterior = NULL;
+    atual = head;
+    while(atual != NULL && atual->dado <= valor_medio){
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    if(anterior == NULL){
+        head = head->prox;
+        free(anterior);
+    }else if(atual != NULL){
+        anterior->prox = atual->prox;
+        free(atual);
+    }
+
+    // Percorrer e imprimir a lista atualizada
+    struct no *temp = head;
+    printf("Lista com cálculo: \n");
+    while(temp != NULL){
+        printf("%i, ", temp->dado);
+        temp = temp->prox;
+    }
+    printf("\n");
+
+    d->i = head;
+    d->f = q;
+    d->n = numNos;
+
+    /*lista com descritor*/
+    printf("Lista com descritor: \n");
+    struct no *temp_descritor = d->i;
+    while(temp_descritor != NULL){
+        printf("%i, ", temp_descritor -> dado);
+        temp_descritor = temp_descritor -> prox;
+    }
+
+    printf("\n");
+
 
     return 0;
 }

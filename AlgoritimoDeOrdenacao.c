@@ -1,16 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-
-/*Percorrer a lista, depois trocar com o maior número*/
-
-
-/*echo "# EstruturaDeDados" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/hPedroSantos/EstruturaDeDados.git
-git push -u origin main*/
     
 void bubbleSort(int arr[], int n){
 
