@@ -11,8 +11,8 @@ struct no {
 
 struct registro {
     int n;
-    int primeiro_dado;
-    int ultimo_dado;
+    struct no *i;
+    struct no *f;
 };
 
 int main(void) {
@@ -33,8 +33,8 @@ int main(void) {
     struct registro *d;
     d = malloc(sizeof(struct registro));
     d->n = 0; // Inicializa o número de elementos na lista com descritor como 0
-    d->primeiro_dado = -1; // Inicializa o primeiro dado como -1, caso a lista esteja vazia
-    d->ultimo_dado = -1; // Inicializa o último dado como -1, caso a lista esteja vazia
+    d->i = NULL; // Inicializa o primeiro dado como NULL, caso a lista esteja vazia
+    d->f = NULL; // Inicializa o último dado como NULL, caso a lista esteja vazia
 
     /* Loop para criar nós aleatórios */
     for (i = 0; i < numNos; i++) {
@@ -52,6 +52,15 @@ int main(void) {
             temp->prox = p;
         }
     }
+    
+    /* Impressão da lista original */
+    printf("Lista original:\n");
+    struct no *tempOriginal = head;
+    while (tempOriginal != NULL) {
+        printf("%d, ", tempOriginal->dado);
+        tempOriginal = tempOriginal->prox;
+    }
+    printf("\n");
 
     /* Ordenar a lista encadeada */
     struct no *atual = head;
@@ -111,24 +120,19 @@ int main(void) {
     // Atualiza os dados do descritor
     d->n = numNos; // Atualiza o número de elementos na lista com descritor
 
-    // Atualiza os dados do primeiro e último nó na lista
-    if (head != NULL) {
-        d->primeiro_dado = head->dado;
-        struct no *ultimo = head;
-        while (ultimo->prox != NULL) {
-            ultimo = ultimo->prox;
-        }
-        d->ultimo_dado = ultimo->dado;
-    } else {
-        d->primeiro_dado = -1; // Se a lista estiver vazia, define os valores como -1
-        d->ultimo_dado = -1;
+    // Atualiza os ponteiros do primeiro e último nó na lista
+    d->i = head;
+    struct no *ultimo = head;
+    while (ultimo != NULL && ultimo->prox != NULL) {
+        ultimo = ultimo->prox;
     }
+    d->f = ultimo;
 
     /* Imprimir dados do descritor */
     printf("Dados do descritor:\n");
     printf("Numero de nos: %d\n", d->n);
-    printf("Primeiro dado: %d\n", d->primeiro_dado);
-    printf("Ultimo dado: %d\n", d->ultimo_dado);
+    printf("Primeiro dado: %d\n", d->i->dado);
+    printf("Ultimo dado: %d\n", d->f->dado);
 
     /*liberar memória*/
     atual = head;
