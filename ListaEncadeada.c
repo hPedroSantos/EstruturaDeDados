@@ -9,62 +9,49 @@ struct no {
     struct no *prox;
 };
 
-struct descritor {
+struct registro {
     int n;
-    struct no *i;
-    struct no *f;
+    int primeiro_dado;
+    int ultimo_dado;
 };
 
 int main(void) {
-    int numNos;
+    int numNos; // Variável para armazenar o número de nós
+    int i; // Variável de controle do loop
 
-    printf("Digite o número de nós: ");
+    printf("Digite o numero de nos: ");
     scanf("%d", &numNos);
 
     /* Semente para gerar números aleatórios */
     srand(time(NULL));
 
     /* Inicialização dos ponteiros dos nós */
-    struct no *q = NULL;
     struct no *head = NULL;
     struct no *p = NULL;
 
-    /* Inicialização dos ponteiros do registror */
-    struct descritor *d;
-    d = malloc(sizeof(struct descritor));
-    d->i = NULL;
-    d->f = NULL;
-    d->n = 0;
+    /* Inicialização dos ponteiros do registro */
+    struct registro *d;
+    d = malloc(sizeof(struct registro));
+    d->n = 0; // Inicializa o número de elementos na lista com descritor como 0
+    d->primeiro_dado = -1; // Inicializa o primeiro dado como -1, caso a lista esteja vazia
+    d->ultimo_dado = -1; // Inicializa o último dado como -1, caso a lista esteja vazia
 
     /* Loop para criar nós aleatórios */
-    for (int i = 0; i < numNos; i++) {
-        if (p == NULL) {
-            p = malloc(sizeof(struct no));
-        }
-
+    for (i = 0; i < numNos; i++) {
+        p = malloc(sizeof(struct no));
         p->dado = rand() % numNos;
         p->prox = NULL;
 
         if (head == NULL) {
             head = p;
         } else {
-            /* O campo prox do ponteiro q está apontando para o endereço de mem. de p, linkando a lista */
-            q->prox = p;
+            struct no *temp = head;
+            while (temp->prox != NULL) {
+                temp = temp->prox;
+            }
+            temp->prox = p;
         }
-        /* Apontar para o ultimo nó */
-        q = p;
-        /* Atualizar o valor para inteirar corretamente */
-        p = NULL;
     }
-
-    /* Imprimir a lista original */
-    printf("Lista original: \n");
-    struct no *temp_original = head;
-    while (temp_original != NULL) {
-        printf("%d, ", temp_original->dado);
-        temp_original = temp_original->prox;
-    }
-    printf("\n");
 
     /* Ordenar a lista encadeada */
     struct no *atual = head;
@@ -84,26 +71,17 @@ int main(void) {
         atual = atual->prox;
     }
 
-    /* Imprimir a lista ordenada */
-    printf("Lista ordenada: \n");
-    struct no *temp_ordenada = head;
-    while (temp_ordenada != NULL) {
-        printf("%d, ", temp_ordenada->dado);
-        temp_ordenada = temp_ordenada->prox;
-    }
-    printf("\n");
-
     /*Calcular valor médio*/
     int soma = 0;
     atual = head;
     while(atual != NULL){
-        soma += atual -> dado;
-        atual = atual -> prox;
+        soma += atual->dado;
+        atual = atual->prox;
     }
 
     float valor_medio_float = (float)soma / numNos;
     int valor_medio = round(valor_medio_float);
-    printf("Valor médio: %i\n", valor_medio);
+    printf("Valor medio: %i\n", valor_medio);
 
     /*Remover o valor acima da média*/
     struct no *anterior = NULL;
@@ -121,40 +99,45 @@ int main(void) {
         free(atual);
     }
 
-    // Percorrer e imprimir a lista atualizada
+    /* Percorrer e imprimir a lista atualizada */
     struct no *temp = head;
-    printf("Lista com cálculo: \n");
+    printf("Lista com calculo: \n");
     while(temp != NULL){
         printf("%i, ", temp->dado);
         temp = temp->prox;
     }
     printf("\n");
 
-    d->i = head;
-    d->f = q;
-    d->n = numNos;
+    // Atualiza os dados do descritor
+    d->n = numNos; // Atualiza o número de elementos na lista com descritor
 
-    /*lista com descritor*/
-    printf("Lista com descritor: \n");
-    struct no *temp_descritor = d->i;
-    while(temp_descritor != NULL){
-        printf("%i, ", temp_descritor -> dado);
-        temp_descritor = temp_descritor -> prox;
+    // Atualiza os dados do primeiro e último nó na lista
+    if (head != NULL) {
+        d->primeiro_dado = head->dado;
+        struct no *ultimo = head;
+        while (ultimo->prox != NULL) {
+            ultimo = ultimo->prox;
+        }
+        d->ultimo_dado = ultimo->dado;
+    } else {
+        d->primeiro_dado = -1; // Se a lista estiver vazia, define os valores como -1
+        d->ultimo_dado = -1;
     }
 
-    printf("\n");
+    /* Imprimir dados do descritor */
+    printf("Dados do descritor:\n");
+    printf("Numero de nos: %d\n", d->n);
+    printf("Primeiro dado: %d\n", d->primeiro_dado);
+    printf("Ultimo dado: %d\n", d->ultimo_dado);
 
+    /*liberar memória*/
+    atual = head;
+    while (atual != NULL) {
+        struct no *temp = atual;
+        atual = atual->prox;
+        free(temp);
+    }
+    free(d);
 
     return 0;
 }
-
-
-
-/*Exercício proposto abaixo*/
-
-/*Usuário informa numero de nós a inserir aleatoriamente em uma Lista Simplesmente Encadeada.
-Obs: o campo dado dos nós é um número inteiro
-Os nós são transferidos em ordem crescente do campo dado para uma Lista com Descritor
-O algorítmo deve calcular o valor médio dos nós na LCD e remover o primeiro nó com valor
-imediatamente superior ao valor médio.
-Imprimir a Lista com Descritor final.*/
