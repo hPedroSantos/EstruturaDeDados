@@ -103,7 +103,14 @@ int main(void) {
 
     /* Criar e preencher a Lista com Descritor */
     d->i = head;
-    d->f = q;
+
+    // Atualizar o ponteiro 'f' para apontar para o último nó na lista
+    struct no *ultimo_no = head;
+    while (ultimo_no->prox != NULL) {
+        ultimo_no = ultimo_no->prox;
+    }
+    d->f = ultimo_no;
+
     d->n = numNos;
 
     /* Imprimir a Lista com Descritor final */
@@ -114,10 +121,9 @@ int main(void) {
         temp_descritor = temp_descritor->prox;
     }
     printf("\n");
-    
-    printf("Acessando os dados do descritor:\n");
-    printf("Dado de i: %d - Dado de f: %d - Dado de n: %d", d->i->dado, d->f->dado, d->f->dado);
 
+    printf("Acessando os dados do descritor:\n");
+    printf("Dado de i: %d - Dado de f: %d - Dado de n: %d", d->i->dado, d->f->dado, d->n);
 
     return 0;
 }
