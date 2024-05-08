@@ -9,7 +9,7 @@ struct no {
     struct no *prox;
 };
 
-struct registro {
+struct descritor {
     int n;
     struct no *i;
     struct no *f;
@@ -29,9 +29,9 @@ int main(void) {
     struct no *head = NULL;
     struct no *p = NULL;
 
-    /* Inicialização dos ponteiros do registro */
-    struct registro *d;
-    d = malloc(sizeof(struct registro));
+    /* Inicialização dos ponteiros do descritor */
+    struct descritor *d;
+    d = malloc(sizeof(struct descritor));
     d->n = 0; // Inicializa o número de elementos na lista com descritor como 0
     d->i = NULL; // Inicializa o primeiro dado como NULL, caso a lista esteja vazia
     d->f = NULL; // Inicializa o último dado como NULL, caso a lista esteja vazia
